@@ -1,5 +1,7 @@
 package simplepoker;
 
+import simplepoker.rules.*;
+
 import java.util.*;
 
 public class PokerHandService {
@@ -9,9 +11,9 @@ public class PokerHandService {
         this.pokerHand = pokerHand;
     }
 
-    protected HashMap<CardSuit, Integer> getPokerHandSuitValues() {
+    public static HashMap<CardSuit, Integer> getPokerHandSuitValues(List<Card> pokerHand) {
         HashMap<CardSuit, Integer> suitValues = new HashMap<>();
-        this.pokerHand.forEach(card -> {
+        pokerHand.forEach(card -> {
             CardSuit cardSuit = card.getCardSuit();
             if (!suitValues.containsKey(cardSuit)) {
                 suitValues.put(cardSuit, 1);
@@ -22,9 +24,9 @@ public class PokerHandService {
         return suitValues;
     }
 
-    protected HashMap<CardValue, Integer> getPokerHandValues() {
+    public static HashMap<CardValue, Integer> getPokerHandValues(List<Card> pokerHand) {
         HashMap<CardValue, Integer> cardValues = new HashMap<>();
-        this.pokerHand.forEach(card -> {
+        pokerHand.forEach(card -> {
             CardValue cardValue = card.getCardValue();
             if (!cardValues.containsKey(cardValue)) {
                 cardValues.put(cardValue, 1);
@@ -35,51 +37,41 @@ public class PokerHandService {
         return cardValues;
     }
 
-    protected boolean checkIfPair() {
-        return Collections.frequency(getPokerHandValues().values(), 2) == 1;
+    public PokerHandRank getPokerHandRank(List<Card> pokerHand) {
+        List<PokerHandRule> listOfRulesToCheck = List.of(
+                new StraightFlush(),
+                new FourOfAKind(),
+                new FullHouse(),
+                new Flush(),
+                new ThreeOfAKind(),
+                new Pair(),
+                new TwoPairs());
+
+        return listOfRulesToCheck
+                .stream()
+                .filter(it -> it.isSatisfiedBy(pokerHand))
+                .findFirst()
+                .orElse(new HighCard())
+                .returnCorrespondingRank();
     }
 
-    protected boolean checkIfTwoPairs() {
-        return Collections.frequency(getPokerHandValues().values(), 2) == 2;
+    public Integer computeWinnerWithSameRank(PokerHandRank rank, List<Card> firstHand, List<Card> secondHand) {
+      // To be done
+        return 1;
     }
 
-    protected boolean checkIfThreeOfAKind() {
-        return Collections.frequency(getPokerHandValues().values(), 3) == 1;
-    }
-
-    protected boolean checkIfFourOfAKind() {
-        return Collections.frequency(getPokerHandValues().values(), 4) == 1;
-    }
-
-    protected boolean checkIfFullHouse() {
-        return checkIfThreeOfAKind() && checkIfPair();
-    }
-
-    protected boolean checkIfFlush() {
-        HashMap<CardSuit, Integer> pokerHandSuitValues = getPokerHandSuitValues();
-        return pokerHandSuitValues.size() == 1;
-    }
-
-    protected boolean checkIfStraightFlush() {
-        return checkIfFlush() && checkIfConsecutiveValues();
-    }
-
-    protected boolean checkIfConsecutiveValues() {
-        Set<CardValue> pokerHandCardValues = getPokerHandValues().keySet();
-        ArrayList<Integer> pokerHandIntegerValues = new ArrayList<>();
-        pokerHandCardValues.forEach(it -> pokerHandIntegerValues.add(it.value));
-        Collections.sort(pokerHandIntegerValues);
-        for (int i = 0; i < pokerHandIntegerValues.size(); i++) {
-            if (i + 1 == pokerHandIntegerValues.size()) {
-                break;
-            }
-            if (pokerHandIntegerValues.get(i + 1) - pokerHandIntegerValues.get(i) != 1) {
-                return false;
-            }
+    public Integer computeWinner(List<Card> firstHand, List<Card> secondHand)
+    {
+        PokerHandRank firstRank = getPokerHandRank(firstHand);
+        PokerHandRank secondRank = getPokerHandRank(secondHand);
+        if(firstRank.pokerHandRankValue > secondRank.pokerHandRankValue) {
+            return 1;
         }
-        return true;
+        if(secondRank.pokerHandRankValue > firstRank.pokerHandRankValue) {
+            return 2;
+        }
+        else {
+            return computeWinnerWithSameRank(firstRank,firstHand,secondHand);
+        }
     }
-
-
-
 }
