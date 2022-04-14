@@ -19,8 +19,4 @@ public enum CardValue {
     CardValue(Integer value) {
         this.value = value;
     }
-
-    Integer getValue() {
-        return this.value;
-    }
 }

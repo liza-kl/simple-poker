@@ -1,11 +1,15 @@
 package simplepoker;
 
 import simplepoker.rules.*;
+import simplepoker.winnerstrategy.HighestCard;
+import simplepoker.winnerstrategy.RegularWinner;
+import simplepoker.winnerstrategy.WinnerStrategy;
 
 import java.util.*;
 
 public class PokerHandService {
     List<Card> pokerHand;
+    private static WinnerStrategy winnerStrategy = new RegularWinner();
 
     PokerHandService(List<Card> pokerHand) {
         this.pokerHand = pokerHand;
@@ -37,7 +41,7 @@ public class PokerHandService {
         return cardValues;
     }
 
-    public PokerHandRank getPokerHandRank(List<Card> pokerHand) {
+    public static PokerHandRank getPokerHandRank(List<Card> pokerHand) {
         List<PokerHandRule> listOfRulesToCheck = List.of(
                 new StraightFlush(),
                 new FourOfAKind(),
@@ -55,23 +59,23 @@ public class PokerHandService {
                 .returnCorrespondingRank();
     }
 
-    public Integer computeWinnerWithSameRank(PokerHandRank rank, List<Card> firstHand, List<Card> secondHand) {
-      // To be done
-        return 1;
-    }
 
     public Integer computeWinner(List<Card> firstHand, List<Card> secondHand)
     {
+        Integer winner = -1;
         PokerHandRank firstRank = getPokerHandRank(firstHand);
         PokerHandRank secondRank = getPokerHandRank(secondHand);
-        if(firstRank.pokerHandRankValue > secondRank.pokerHandRankValue) {
-            return 1;
+        if (firstRank != secondRank) {
+            winner = winnerStrategy.computeWinner(firstHand, secondHand);
         }
-        if(secondRank.pokerHandRankValue > firstRank.pokerHandRankValue) {
-            return 2;
+        if (firstRank == PokerHandRank.HIGHCARD) {
+            winnerStrategy = new HighestCard();
+            winner = winnerStrategy.computeWinner(firstHand,secondHand);
         }
-        else {
-            return computeWinnerWithSameRank(firstRank,firstHand,secondHand);
+        if(firstRank == PokerHandRank.PAIR) {
+
         }
+        return winner;
+
     }
 }
