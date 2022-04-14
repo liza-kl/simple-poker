@@ -13,15 +13,12 @@ class PokerHandServiceTest {
     void getPokerHandValues() {
         List<Card> pokerHand = List.of(new Card(S, CardValue.A),
                 new Card(S, CardValue.TEN),
-                new Card(S, CardValue.NINE),
-                new Card(D, CardValue.EIGHT),
+                new Card(C, CardValue.TEN),
+                new Card(D, CardValue.TEN),
                 new Card(S, CardValue.FIVE));
-        PokerHandService pokerHandService = new PokerHandService(pokerHand);
-        assertFalse(pokerHandService.checkIfPair());
-        assertFalse(pokerHandService.checkIfTwoPairs());
-        assertTrue(pokerHandService.checkIfThreeOfAKind());
-        pokerHandService.checkIfStraightFlush();
-        assertFalse(pokerHandService.checkIfFlush());
+        PokerHandService pokerHandService = new PokerHandService();
+        //assertTrue(new Flush().isSatisfiedBy(pokerHand));
+        assertEquals(pokerHandService.getPokerHandRank(pokerHand), "Flush");
     }
 
     @Test
@@ -31,8 +28,37 @@ class PokerHandServiceTest {
                 new Card(S, CardValue.FIVE),
                 new Card(D, CardValue.EIGHT),
                 new Card(S, CardValue.SEVEN));
-        PokerHandService pokerHandService = new PokerHandService(pokerHand);
-        assertTrue(pokerHandService.checkIfConsecutiveValues());
+        PokerHandService pokerHandService = new PokerHandService();
     }
+
+    @Test
+    void calculateRegularWinner() {
+        List<Card> firstPokerHand = List.of(new Card(H, CardValue.TWO),
+                new Card(C, CardValue.THREE),
+                new Card(S, CardValue.FOUR),
+                new Card(S, CardValue.FIVE),
+                new Card(H, CardValue.SIX));
+        List<Card> secondPokerHand = List.of(new Card(D, CardValue.TWO),
+                new Card(H, CardValue.SEVEN),
+                new Card(D, CardValue.SEVEN),
+                new Card(H, CardValue.J),
+                new Card(S, CardValue.K));
+        assertEquals(PokerHandService.computeWinner(firstPokerHand, secondPokerHand), 2);
+    }
+    @Test
+    void calculateHighestCardWinner() {
+        List<Card> firstPokerHand = List.of(new Card(H, CardValue.TWO),
+                new Card(C, CardValue.THREE),
+                new Card(S, CardValue.SEVEN),
+                new Card(S, CardValue.Q),
+                new Card(H, CardValue.K));
+        List<Card> secondPokerHand = List.of(new Card(D, CardValue.TWO),
+                new Card(H, CardValue.THREE),
+                new Card(D, CardValue.SEVEN),
+                new Card(H, CardValue.J),
+                new Card(S, CardValue.K));
+        assertEquals(PokerHandService.computeWinner(firstPokerHand, secondPokerHand), 1);
+    }
+
 
 }
