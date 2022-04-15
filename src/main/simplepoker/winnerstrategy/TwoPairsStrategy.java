@@ -1,7 +1,7 @@
 package simplepoker.winnerstrategy;
 
 import simplepoker.Card;
-import simplepoker.CardValue;
+import simplepoker.enums.CardValue;
 import simplepoker.PokerHandService;
 
 import java.util.*;
@@ -12,7 +12,7 @@ import static simplepoker.PokerHandService.getKeyByValue;
 
 public class TwoPairsStrategy implements WinnerStrategy {
 
-    private Map<CardValue, Integer> getTwoPairsOfHand(List<Card> pokerHand) {
+    private Map<CardValue, Integer> getAllPairsOfHand(List<Card> pokerHand) {
         return PokerHandService
                 .getPokerHandValues(pokerHand)
                 .entrySet()
@@ -21,7 +21,7 @@ public class TwoPairsStrategy implements WinnerStrategy {
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
-    private List<Integer> getSortedCardValuesOfHand(Map<CardValue, Integer> twoPairsOfHand) {
+    private List<Integer> sortPokerHand(Map<CardValue, Integer> twoPairsOfHand) {
         List<Integer> cardValuesOfPokerHand = new ArrayList<>();
         twoPairsOfHand.keySet().forEach(it -> cardValuesOfPokerHand.add(it.value));
         Collections.sort(cardValuesOfPokerHand);
@@ -40,14 +40,14 @@ public class TwoPairsStrategy implements WinnerStrategy {
 
     @Override
     public Integer computeWinner(List<Card> firstHand, List<Card> secondHand) {
-        Map<CardValue, Integer> twoPairsOfFirstHand = getTwoPairsOfHand(firstHand);
-        Map<CardValue, Integer> twoPairsOfSecondHand = getTwoPairsOfHand(secondHand);
+        Map<CardValue, Integer> twoPairsOfFirstHand = getAllPairsOfHand(firstHand);
+        Map<CardValue, Integer> twoPairsOfSecondHand = getAllPairsOfHand(secondHand);
 
-        List<Integer> cardValuesOfFirstHand = getSortedCardValuesOfHand(twoPairsOfFirstHand);
-        List<Integer> cardValuesOfSecondHand = getSortedCardValuesOfHand(twoPairsOfSecondHand);
+        List<Integer> cardValuesOfFirstHand = sortPokerHand(twoPairsOfFirstHand);
+        List<Integer> cardValuesOfSecondHand = sortPokerHand(twoPairsOfSecondHand);
         Integer winner = null;
 
-        for(int i = 0; i < cardValuesOfFirstHand.size(); i++) {
+        for (Integer integer : cardValuesOfFirstHand) {
             int compare = Integer.compare(Collections.max(cardValuesOfFirstHand), Collections.max(cardValuesOfSecondHand));
             switch (compare) {
                 case -1 -> winner = 1;
@@ -56,7 +56,6 @@ public class TwoPairsStrategy implements WinnerStrategy {
             }
             cardValuesOfFirstHand.remove(cardValuesOfFirstHand.size() - 1);
             cardValuesOfSecondHand.remove(cardValuesOfSecondHand.size() - 1);
-            i++;
         }
         return winner;
     }

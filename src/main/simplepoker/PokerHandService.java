@@ -12,8 +12,7 @@ import simplepoker.winnerstrategy.*;
 import java.util.*;
 
 public class PokerHandService {
-    List<Card> pokerHand;
-    private static WinnerStrategy winnerStrategy = new RegularWinner();
+    static WinnerStrategy winnerStrategy = new RegularWinnerStrategy();
 
     public static <T, E> T getKeyByValue(Map<T, E> map, E value) {
         for (Map.Entry<T, E> entry : map.entrySet()) {
@@ -53,12 +52,12 @@ public class PokerHandService {
     public static PokerHand getPokerHand(List<Card> pokerHand) {
         List<PokerHandRule> listOfRulesToCheck = List.of(
                 new StraightFlush(),
-                new FourOfAKind(),
                 new FullHouse(),
                 new Flush(),
+                new FourOfAKind(),
                 new ThreeOfAKind(),
-                new Pair(),
-                new TwoPairs());
+                new TwoPairs(),
+                new Pair());
 
         return listOfRulesToCheck
                 .stream()
@@ -73,7 +72,7 @@ public class PokerHandService {
         PokerHand secondPokerHand = getPokerHand(secondHand);
 
         if (firstPokerHand != secondPokerHand) {
-            winnerStrategy = new RegularWinner();
+            winnerStrategy = new RegularWinnerStrategy();
         }
         winnerStrategy = switch (firstPokerHand) {
             case STRAIGHT -> new StraightStrategy();

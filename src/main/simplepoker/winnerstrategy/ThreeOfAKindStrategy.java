@@ -1,21 +1,14 @@
 package simplepoker.winnerstrategy;
 
 import simplepoker.Card;
-import simplepoker.CardValue;
+import simplepoker.enums.CardValue;
 import simplepoker.PokerHandService;
 
 import java.util.*;
 
-public class ThreeOfAKind implements WinnerStrategy{
+import static simplepoker.PokerHandService.getKeyByValue;
 
-    private static <T, E> T getKeyByValue(Map<T, E> map, E value) {
-        for (Map.Entry<T, E> entry : map.entrySet()) {
-            if (Objects.equals(value, entry.getValue())) {
-                return entry.getKey();
-            }
-        }
-        return null;
-    }
+public class ThreeOfAKindStrategy implements WinnerStrategy{
 
     @Override
     public Integer computeWinner(List<Card> firstHand, List<Card> secondHand) {
