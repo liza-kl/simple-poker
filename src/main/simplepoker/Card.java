@@ -1,5 +1,8 @@
 package simplepoker;
 
+import simplepoker.enums.CardSuit;
+import simplepoker.enums.CardValue;
+
 public class Card {
     private final CardSuit cardSuit;
     private final CardValue cardValue;
