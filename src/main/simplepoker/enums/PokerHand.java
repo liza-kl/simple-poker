@@ -1,6 +1,6 @@
-package simplepoker;
+package simplepoker.enums;
 
-public enum PokerHandRank {
+public enum PokerHand {
     HIGHCARD(0),
     PAIR(1),
     TWOPAIRS(2),
@@ -12,7 +12,7 @@ public enum PokerHandRank {
 
     public final Integer pokerHandRankValue;
 
-    PokerHandRank(int pokerHandRankValue) {
+    PokerHand(int pokerHandRankValue) {
         this.pokerHandRankValue = pokerHandRankValue;
     }
 }

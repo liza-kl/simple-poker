@@ -1,4 +1,4 @@
-package simplepoker;
+package simplepoker.enums;
 
 public enum CardValue {
     TWO(2),
