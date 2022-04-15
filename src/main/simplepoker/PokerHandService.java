@@ -2,7 +2,7 @@ package simplepoker;
 
 import simplepoker.enums.CardSuit;
 import simplepoker.enums.CardValue;
-import simplepoker.enums.PokerHandRank;
+import simplepoker.enums.PokerHand;
 import simplepoker.rules.*;
 import simplepoker.rules.Flush;
 import simplepoker.rules.Pair;
@@ -24,7 +24,7 @@ public class PokerHandService {
         return null;
     }
 
-    public static HashMap<CardSuit, Integer> getPokerHandSuitValues(List<Card> pokerHand) {
+    public static Map<CardSuit, Integer> getPokerHandSuitValues(List<Card> pokerHand) {
         HashMap<CardSuit, Integer> suitValues = new HashMap<>();
         pokerHand.forEach(card -> {
             CardSuit cardSuit = card.getCardSuit();
@@ -37,7 +37,7 @@ public class PokerHandService {
         return suitValues;
     }
 
-    public static HashMap<CardValue, Integer> getPokerHandValues(List<Card> pokerHand) {
+    public static Map<CardValue, Integer> getPokerHandValues(List<Card> pokerHand) {
         HashMap<CardValue, Integer> cardValues = new HashMap<>();
         pokerHand.forEach(card -> {
             CardValue cardValue = card.getCardValue();
@@ -50,7 +50,7 @@ public class PokerHandService {
         return cardValues;
     }
 
-    public static PokerHandRank getPokerHandRank(List<Card> pokerHand) {
+    public static PokerHand getPokerHand(List<Card> pokerHand) {
         List<PokerHandRule> listOfRulesToCheck = List.of(
                 new StraightFlush(),
                 new FourOfAKind(),
@@ -68,39 +68,22 @@ public class PokerHandService {
                 .returnCorrespondingRank();
     }
 
-    public static Integer computeWinner(List<Card> firstHand, List<Card> secondHand)
-    {
-        PokerHandRank firstRank = getPokerHandRank(firstHand);
-        PokerHandRank secondRank = getPokerHandRank(secondHand);
+    public static Integer computeWinner(List<Card> firstHand, List<Card> secondHand) {
+        PokerHand firstPokerHand = getPokerHand(firstHand);
+        PokerHand secondPokerHand = getPokerHand(secondHand);
 
-        if (firstRank != secondRank) {
-           winnerStrategy = new RegularWinner();
+        if (firstPokerHand != secondPokerHand) {
+            winnerStrategy = new RegularWinner();
         }
-        if(firstRank == PokerHandRank.STRAIGHT) {
-            winnerStrategy = new StraightStrategy();
-        }
-        if(firstRank == PokerHandRank.FULLHOUSE) {
-            winnerStrategy = new ThreeOfAKindStrategy();
-        }
-        if(firstRank == PokerHandRank.FLUSH) {
-            winnerStrategy = new HighestCardStrategy();
-        }
-        if(firstRank == PokerHandRank.FOUROFAKIND) {
-            winnerStrategy = new FourOfAKindStrategy();
-        }
-        if(firstRank == PokerHandRank.THREEOFAKIND) {
-            winnerStrategy = new ThreeOfAKindStrategy();
-        }
-        if(firstRank == PokerHandRank.TWOPAIRS) {
-            winnerStrategy = new TwoPairsStrategy();
-        }
-        if(firstRank == PokerHandRank.PAIR) {
-            winnerStrategy = new PairStrategy();
-        }
-        if (firstRank == PokerHandRank.HIGHCARD) {
-            winnerStrategy = new HighestCardStrategy();
-        }
-        return winnerStrategy.computeWinner(firstHand,secondHand);
+        winnerStrategy = switch (firstPokerHand) {
+            case STRAIGHT -> new StraightStrategy();
+            case FULLHOUSE, THREEOFAKIND -> new ThreeOfAKindStrategy();
+            case FLUSH, HIGHCARD ->  new HighestCardStrategy();
+            case FOUROFAKIND -> new FourOfAKindStrategy();
+            case TWOPAIRS ->  new TwoPairsStrategy();
+            case PAIR -> new PairStrategy();
+        };
+        return winnerStrategy.computeWinner(firstHand, secondHand);
 
     }
 }
