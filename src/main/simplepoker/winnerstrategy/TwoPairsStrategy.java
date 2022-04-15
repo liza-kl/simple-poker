@@ -38,7 +38,6 @@ public class TwoPairsStrategy implements WinnerStrategy {
     public Integer computeWinner(List<Card> firstHand, List<Card> secondHand) {
         Map<CardValue, Integer> twoPairsOfFirstHand = getAllPairsOfHand(firstHand);
         Map<CardValue, Integer> twoPairsOfSecondHand = getAllPairsOfHand(secondHand);
-
         List<Integer> cardValuesOfFirstHand = sortPokerHand(twoPairsOfFirstHand);
         List<Integer> cardValuesOfSecondHand = sortPokerHand(twoPairsOfSecondHand);
         Integer winner = null;
@@ -46,9 +45,9 @@ public class TwoPairsStrategy implements WinnerStrategy {
         for (Integer ignored : cardValuesOfFirstHand) {
             int compare = Integer.compare(Collections.max(cardValuesOfFirstHand), Collections.max(cardValuesOfSecondHand));
             switch (compare) {
-                case -1 -> winner = 1;
+                case -1 -> winner = 2;
                 case 0 -> winner = getWinnerWithRemaningCard(firstHand, secondHand);
-                case 1 -> winner = 2;
+                case 1 -> winner = 1;
             }
             cardValuesOfFirstHand.remove(cardValuesOfFirstHand.size() - 1);
             cardValuesOfSecondHand.remove(cardValuesOfSecondHand.size() - 1);

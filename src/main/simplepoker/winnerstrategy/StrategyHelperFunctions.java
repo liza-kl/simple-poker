@@ -17,9 +17,10 @@ public class StrategyHelperFunctions {
         return null;
     }
 
-    public static List<Integer> sortPokerHand(Map<CardValue, Integer> twoPairsOfHand) {
+
+    public static List<Integer> sortPokerHand(Map<CardValue, Integer> hand) {
         List<Integer> cardValuesOfPokerHand = new ArrayList<>();
-        twoPairsOfHand.keySet().forEach(it -> cardValuesOfPokerHand.add(it.value));
+        hand.keySet().forEach(it -> cardValuesOfPokerHand.add(it.value));
         Collections.sort(cardValuesOfPokerHand);
         return cardValuesOfPokerHand;
     }
@@ -32,11 +33,11 @@ public class StrategyHelperFunctions {
     }
 
     public static Integer getWinnerByHighestCard(List<Integer> firstHandIntValues, List<Integer> secondHandIntValues) {
-        for(int i = 0; i <= firstHandIntValues.size(); i++) {
-            if(Collections.max(firstHandIntValues) > Collections.max(secondHandIntValues)) {
+        for (int i = 0; i <= firstHandIntValues.size(); i++) {
+            if (Collections.max(firstHandIntValues) > Collections.max(secondHandIntValues)) {
                 return 1;
             }
-            if(Collections.max(secondHandIntValues) > Collections.max(firstHandIntValues)) {
+            if (Collections.max(secondHandIntValues) > Collections.max(firstHandIntValues)) {
                 return 2;
             } else {
                 firstHandIntValues.remove(firstHandIntValues.size() - 1);
