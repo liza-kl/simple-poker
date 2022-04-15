@@ -10,9 +10,13 @@ public enum PokerHand {
     FULLHOUSE(6),
     STRAIGHT(7);
 
-    public final Integer pokerHandRankValue;
 
-    PokerHand(int pokerHandRankValue) {
+    private PokerHand(int pokerHandRankValue) {
         this.pokerHandRankValue = pokerHandRankValue;
     }
+    private final int pokerHandRankValue;
+    public int getPokerHandRankValue() {
+        return pokerHandRankValue;
+    }
+
 }

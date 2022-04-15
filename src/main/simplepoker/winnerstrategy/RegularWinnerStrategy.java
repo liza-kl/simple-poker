@@ -12,6 +12,6 @@ public class RegularWinnerStrategy implements WinnerStrategy {
     public Integer computeWinner(List<Card> firstHand, List<Card> secondHand) {
         PokerHand firstRank = getPokerHand(firstHand);
         PokerHand secondRank = getPokerHand(secondHand);
-        return (firstRank.pokerHandRankValue > secondRank.pokerHandRankValue) ? 1 : 2;
+        return (firstRank.getPokerHandRankValue() > secondRank.getPokerHandRankValue()) ? 1 : 2;
     }
 }

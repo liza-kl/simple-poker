@@ -2,7 +2,6 @@ package simplepoker.winnerstrategy;
 
 import simplepoker.Card;
 import simplepoker.enums.CardValue;
-import simplepoker.PokerHandService;
 
 import java.util.*;
 
@@ -13,9 +12,11 @@ public class PairStrategy implements WinnerStrategy {
 
     @Override
     public Integer computeWinner(List<Card> firstHand, List<Card> secondHand) {
-        CardValue valueOfPairFirstHand = getKeyByValue(PokerHandService.getPokerHandValues(firstHand), 2);
-        CardValue valueOfPairSecondHand = getKeyByValue(PokerHandService.getPokerHandValues(secondHand), 2);
-        int compare = Integer.compare(valueOfPairFirstHand.value, valueOfPairSecondHand.value);
+        CardValue valueOfPairFirstHand = getKeyByValue(StrategyHelperFunctions.getPokerHandValues(firstHand), 2);
+        CardValue valueOfPairSecondHand = getKeyByValue(StrategyHelperFunctions.getPokerHandValues(secondHand), 2);
+        assert valueOfPairFirstHand != null;
+        assert valueOfPairSecondHand != null;
+        int compare = Integer.compare(valueOfPairFirstHand.getCardValue(), valueOfPairSecondHand.getCardValue());
         return switch (compare) {
             case -1 -> 1;
             case 0 -> computeWinnerWithRemainingCards(firstHand, secondHand, valueOfPairFirstHand, valueOfPairSecondHand);
@@ -37,10 +38,10 @@ public class PairStrategy implements WinnerStrategy {
     }
 
     private List<Integer> getSortedListOfRemainingCards(List<Card> hand, CardValue cardValuesOfHand) {
-        Set<CardValue> firstList = PokerHandService.getPokerHandValues(hand).keySet();
-        firstList.removeIf(value -> Objects.equals(value.value, cardValuesOfHand.value));
+        Set<CardValue> firstList = StrategyHelperFunctions.getPokerHandValues(hand).keySet();
+        firstList.removeIf(value -> Objects.equals(value.getCardValue(), cardValuesOfHand.getCardValue()));
         List<Integer> remainingCardsFirstHand = new ArrayList<>();
-        firstList.forEach(it -> remainingCardsFirstHand.add(it.value));
+        firstList.forEach(it -> remainingCardsFirstHand.add(it.getCardValue()));
         Collections.sort(remainingCardsFirstHand);
         return remainingCardsFirstHand;
     }

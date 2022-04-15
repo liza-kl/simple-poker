@@ -3,19 +3,16 @@ package simplepoker.rules;
 import simplepoker.Card;
 import simplepoker.enums.CardValue;
 import simplepoker.enums.PokerHand;
-import simplepoker.PokerHandService;
+import simplepoker.winnerstrategy.StrategyHelperFunctions;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class ConsecutiveValues implements PokerHandRule{
     @Override
     public boolean isSatisfiedBy(List<Card> pokerHand) {
-        Set<CardValue> pokerHandCardValues = PokerHandService.getPokerHandValues(pokerHand).keySet();
+        Set<CardValue> pokerHandCardValues = StrategyHelperFunctions.getPokerHandValues(pokerHand).keySet();
         ArrayList<Integer> pokerHandIntegerValues = new ArrayList<>();
-        pokerHandCardValues.forEach(it -> pokerHandIntegerValues.add(it.value));
+        pokerHandCardValues.forEach(it -> pokerHandIntegerValues.add(it.getCardValue()));
         Collections.sort(pokerHandIntegerValues);
 
         for (int i = 0; i < pokerHandIntegerValues.size(); i++) {
@@ -31,6 +28,6 @@ public class ConsecutiveValues implements PokerHandRule{
 
     @Override
     public PokerHand returnCorrespondingRank() {
-        return null;
+        throw new UnsupportedOperationException("There is no corresponding PokerHand to this rule");
     }
 }

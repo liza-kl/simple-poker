@@ -1,7 +1,5 @@
 package simplepoker;
 
-import simplepoker.enums.CardSuit;
-import simplepoker.enums.CardValue;
 import simplepoker.enums.PokerHand;
 import simplepoker.rules.*;
 import simplepoker.rules.Flush;
@@ -17,32 +15,6 @@ public class PokerHandService {
     public static WinnerStrategy getWinnerStrategy() {
         return winnerStrategy;
     }
-    public static Map<CardSuit, Integer> getPokerHandSuitValues(List<Card> pokerHand) {
-        HashMap<CardSuit, Integer> suitValues = new HashMap<>();
-        pokerHand.forEach(card -> {
-            CardSuit cardSuit = card.getCardSuit();
-            if (!suitValues.containsKey(cardSuit)) {
-                suitValues.put(cardSuit, 1);
-            } else {
-                suitValues.put(cardSuit, suitValues.get(cardSuit) + 1);
-            }
-        });
-        return suitValues;
-    }
-
-    public static Map<CardValue, Integer> getPokerHandValues(List<Card> pokerHand) {
-        HashMap<CardValue, Integer> cardValues = new HashMap<>();
-        pokerHand.forEach(card -> {
-            CardValue cardValue = card.getCardValue();
-            if (!cardValues.containsKey(cardValue)) {
-                cardValues.put(cardValue, 1);
-            } else {
-                cardValues.put(cardValue, cardValues.get(cardValue) + 1);
-            }
-        });
-        return cardValues;
-    }
-
     public static PokerHand getPokerHand(List<Card> pokerHand) {
         List<PokerHandRule> listOfRulesToCheck = List.of(
                 new StraightFlush(),

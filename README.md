@@ -22,3 +22,10 @@ A poker hand consists of 5 cards dealt from the deck. Poker hands are ranked by 
 • Four of a kind: 4 cards with the same value. Ranked by the value of the 4 cards.
 
 • Straight flush: 5 cards of the same suit with consecutive values. Ranked by the highest card in the hand.
+
+## How to start the programme
+```
+git clone
+```
+
+##

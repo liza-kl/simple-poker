@@ -1,7 +1,6 @@
 package simplepoker.winnerstrategy;
 
 import simplepoker.Card;
-import simplepoker.PokerHandService;
 import simplepoker.enums.CardValue;
 
 import java.util.Collections;
@@ -16,7 +15,7 @@ import static simplepoker.winnerstrategy.StrategyHelperFunctions.sortPokerHand;
 public class TwoPairsStrategy implements WinnerStrategy {
 
     private Map<CardValue, Integer> getAllPairsOfHand(List<Card> pokerHand) {
-        return PokerHandService
+        return StrategyHelperFunctions
                 .getPokerHandValues(pokerHand)
                 .entrySet()
                 .stream()
@@ -25,13 +24,13 @@ public class TwoPairsStrategy implements WinnerStrategy {
     }
 
     private CardValue getRemaningCard(List<Card> pokerHand) {
-        return  getKeyByValue(PokerHandService.getPokerHandValues(pokerHand), 1);
+        return  getKeyByValue(StrategyHelperFunctions.getPokerHandValues(pokerHand), 1);
     }
 
     private Integer getWinnerWithRemaningCard(List<Card> firstHand, List<Card> secondHand) {
         CardValue getRemainingFirstHand = getRemaningCard(firstHand);
         CardValue getRemainingSecondHand = getRemaningCard(secondHand);
-        return (getRemainingFirstHand.value > getRemainingSecondHand.value) ? 1 : 2;
+        return (getRemainingFirstHand.getCardValue() > getRemainingSecondHand.getCardValue()) ? 1 : 2;
     }
 
     @Override
