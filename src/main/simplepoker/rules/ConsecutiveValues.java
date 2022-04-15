@@ -17,6 +17,7 @@ public class ConsecutiveValues implements PokerHandRule{
         ArrayList<Integer> pokerHandIntegerValues = new ArrayList<>();
         pokerHandCardValues.forEach(it -> pokerHandIntegerValues.add(it.value));
         Collections.sort(pokerHandIntegerValues);
+
         for (int i = 0; i < pokerHandIntegerValues.size(); i++) {
             if (i + 1 == pokerHandIntegerValues.size()) {
                 break;

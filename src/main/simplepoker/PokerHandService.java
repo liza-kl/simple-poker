@@ -14,15 +14,6 @@ import java.util.*;
 public class PokerHandService {
     static WinnerStrategy winnerStrategy = new RegularWinnerStrategy();
 
-    public static <T, E> T getKeyByValue(Map<T, E> map, E value) {
-        for (Map.Entry<T, E> entry : map.entrySet()) {
-            if (Objects.equals(value, entry.getValue())) {
-                return entry.getKey();
-            }
-        }
-        return null;
-    }
-
     public static Map<CardSuit, Integer> getPokerHandSuitValues(List<Card> pokerHand) {
         HashMap<CardSuit, Integer> suitValues = new HashMap<>();
         pokerHand.forEach(card -> {

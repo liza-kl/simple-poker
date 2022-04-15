@@ -1,13 +1,16 @@
 package simplepoker.winnerstrategy;
 
 import simplepoker.Card;
-import simplepoker.enums.CardValue;
 import simplepoker.PokerHandService;
+import simplepoker.enums.CardValue;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
-import static simplepoker.PokerHandService.getKeyByValue;
+import static simplepoker.winnerstrategy.StrategyHelperFunctions.getKeyByValue;
+import static simplepoker.winnerstrategy.StrategyHelperFunctions.sortPokerHand;
 
 
 public class TwoPairsStrategy implements WinnerStrategy {
@@ -19,13 +22,6 @@ public class TwoPairsStrategy implements WinnerStrategy {
                 .stream()
                 .filter(x -> x.getValue() == 2)
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
-    }
-
-    private List<Integer> sortPokerHand(Map<CardValue, Integer> twoPairsOfHand) {
-        List<Integer> cardValuesOfPokerHand = new ArrayList<>();
-        twoPairsOfHand.keySet().forEach(it -> cardValuesOfPokerHand.add(it.value));
-        Collections.sort(cardValuesOfPokerHand);
-        return cardValuesOfPokerHand;
     }
 
     private CardValue getRemaningCard(List<Card> pokerHand) {
@@ -47,7 +43,7 @@ public class TwoPairsStrategy implements WinnerStrategy {
         List<Integer> cardValuesOfSecondHand = sortPokerHand(twoPairsOfSecondHand);
         Integer winner = null;
 
-        for (Integer integer : cardValuesOfFirstHand) {
+        for (Integer ignored : cardValuesOfFirstHand) {
             int compare = Integer.compare(Collections.max(cardValuesOfFirstHand), Collections.max(cardValuesOfSecondHand));
             switch (compare) {
                 case -1 -> winner = 1;

@@ -6,7 +6,8 @@ import simplepoker.PokerHandService;
 
 import java.util.*;
 
-import static simplepoker.PokerHandService.getKeyByValue;
+import static simplepoker.winnerstrategy.StrategyHelperFunctions.getKeyByValue;
+
 
 public class ThreeOfAKindStrategy implements WinnerStrategy{
 

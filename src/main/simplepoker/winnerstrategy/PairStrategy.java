@@ -6,44 +6,43 @@ import simplepoker.PokerHandService;
 
 import java.util.*;
 
-import static simplepoker.PokerHandService.getKeyByValue;
+import static simplepoker.winnerstrategy.StrategyHelperFunctions.getKeyByValue;
+import static simplepoker.winnerstrategy.StrategyHelperFunctions.getWinnerByHighestCard;
 
 public class PairStrategy implements WinnerStrategy {
+
     @Override
     public Integer computeWinner(List<Card> firstHand, List<Card> secondHand) {
-        CardValue getValueOfThreeKindFirstHand = getKeyByValue(PokerHandService.getPokerHandValues(firstHand), 2);
-        CardValue getValueOfThreeKindSecondHand = getKeyByValue(PokerHandService.getPokerHandValues(secondHand), 2);
-        if (getValueOfThreeKindFirstHand.value > getValueOfThreeKindSecondHand.value) {
+        CardValue valueOfPairFirstHand = getKeyByValue(PokerHandService.getPokerHandValues(firstHand), 2);
+        CardValue valueOfPairSecondHand = getKeyByValue(PokerHandService.getPokerHandValues(secondHand), 2);
+        if (valueOfPairFirstHand.value > valueOfPairSecondHand.value) {
             return 1;
         }
-        if (getValueOfThreeKindFirstHand.value < getValueOfThreeKindSecondHand.value) {
+        if (valueOfPairFirstHand.value < valueOfPairSecondHand.value) {
             return 2;
         }
+        return computeWinnerWithRemainingCards(firstHand, secondHand, valueOfPairFirstHand, valueOfPairSecondHand);
+    }
 
+    private Integer computeWinnerWithRemainingCards(List<Card> firstHand,
+                                                    List<Card> secondHand,
+                                                    CardValue valueOfPairFirstHand,
+                                                    CardValue valueOfPairSecondHand) {
         Set<CardValue> firstList = PokerHandService.getPokerHandValues(firstHand).keySet();
         Set<CardValue> secondList = PokerHandService.getPokerHandValues(secondHand).keySet();
-        firstList.removeIf(value -> value.value == getValueOfThreeKindFirstHand.value);
-        secondList.removeIf(value -> value.value == getValueOfThreeKindSecondHand.value);
+        firstList.removeIf(value -> Objects.equals(value.value, valueOfPairFirstHand.value));
+        secondList.removeIf(value -> Objects.equals(value.value, valueOfPairSecondHand.value));
 
-        List<Integer> firstBla = new ArrayList<>();
-        List<Integer> secondBla = new ArrayList<>();
-        firstList.forEach(it -> firstBla.add(it.value));
-        secondList.forEach(it -> secondBla.add(it.value));
-        Collections.sort(firstBla);
-        Collections.sort(secondBla);
+        List<Integer> remainingCardsFirstHand = new ArrayList<>();
+        List<Integer> remainingCardsSecondHand = new ArrayList<>();
+        firstList.forEach(it -> remainingCardsFirstHand.add(it.value));
+        secondList.forEach(it -> remainingCardsSecondHand.add(it.value));
 
-        for(int i = 0; i <= firstBla.size(); i++) {
-            if(Collections.max(firstBla) > Collections.max(secondBla)) {
-                return 1;
-            }
-            if(Collections.max(secondBla) > Collections.max(firstBla)) {
-                return 2;
-            }
-                firstBla.remove(firstBla.size() - 1);
-                secondBla.remove(secondBla.size() - 1);
-                i++;
+        Collections.sort(remainingCardsFirstHand);
+        Collections.sort(remainingCardsSecondHand);
 
-        }
+        Integer x = getWinnerByHighestCard(remainingCardsFirstHand, remainingCardsSecondHand);
+        if (x != null) return x;
         return 0;
     }
 }
