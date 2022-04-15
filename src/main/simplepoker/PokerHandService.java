@@ -12,8 +12,11 @@ import simplepoker.winnerstrategy.*;
 import java.util.*;
 
 public class PokerHandService {
-    static WinnerStrategy winnerStrategy = new RegularWinnerStrategy();
+    private static WinnerStrategy winnerStrategy = new RegularWinnerStrategy();
 
+    public static WinnerStrategy getWinnerStrategy() {
+        return winnerStrategy;
+    }
     public static Map<CardSuit, Integer> getPokerHandSuitValues(List<Card> pokerHand) {
         HashMap<CardSuit, Integer> suitValues = new HashMap<>();
         pokerHand.forEach(card -> {
@@ -64,6 +67,7 @@ public class PokerHandService {
 
         if (firstPokerHand != secondPokerHand) {
             winnerStrategy = new RegularWinnerStrategy();
+            return winnerStrategy.computeWinner(firstHand, secondHand);
         }
         winnerStrategy = switch (firstPokerHand) {
             case STRAIGHT -> new StraightStrategy();

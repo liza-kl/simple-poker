@@ -13,9 +13,9 @@ public class Main {
         List<Card> firstPokerHand = List.of(
                 new Card(H, CardValue.THREE),
                 new Card(C, CardValue.THREE),
-                new Card(S, CardValue.NINE),
-                new Card(S, CardValue.NINE),
-                new Card(H, CardValue.K));
+                new Card(S, CardValue.EIGHT),
+                new Card(S, CardValue.EIGHT),
+                new Card(H, CardValue.A));
         List<Card> secondPokerHand = List.of(
                 new Card(D, CardValue.THREE),
                 new Card(S, CardValue.THREE),
