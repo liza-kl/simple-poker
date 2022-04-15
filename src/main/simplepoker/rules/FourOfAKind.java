@@ -1,7 +1,7 @@
 package simplepoker.rules;
 
 import simplepoker.Card;
-import simplepoker.PokerHandRank;
+import simplepoker.enums.PokerHand;
 import simplepoker.PokerHandService;
 
 import java.util.Collections;
@@ -14,7 +14,7 @@ public class FourOfAKind implements PokerHandRule{
     }
 
     @Override
-    public PokerHandRank returnCorrespondingRank() {
-        return PokerHandRank.FOUROFAKIND;
+    public PokerHand returnCorrespondingRank() {
+        return PokerHand.FOUROFAKIND;
     }
 }

@@ -1,8 +1,8 @@
 package simplepoker.rules;
 
 import simplepoker.Card;
-import simplepoker.CardValue;
-import simplepoker.PokerHandRank;
+import simplepoker.enums.CardValue;
+import simplepoker.enums.PokerHand;
 import simplepoker.PokerHandService;
 
 import java.util.ArrayList;
@@ -29,7 +29,7 @@ public class ConsecutiveValues implements PokerHandRule{
     }
 
     @Override
-    public PokerHandRank returnCorrespondingRank() {
+    public PokerHand returnCorrespondingRank() {
         return null;
     }
 }

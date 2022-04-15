@@ -1,7 +1,7 @@
 package simplepoker.rules;
 
 import simplepoker.Card;
-import simplepoker.PokerHandRank;
+import simplepoker.enums.PokerHand;
 
 import java.util.List;
 
@@ -14,7 +14,7 @@ public class StraightFlush implements PokerHandRule {
     }
 
     @Override
-    public PokerHandRank returnCorrespondingRank() {
-        return PokerHandRank.STRAIGHT;
+    public PokerHand returnCorrespondingRank() {
+        return PokerHand.STRAIGHT;
     }
 }

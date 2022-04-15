@@ -1,7 +1,7 @@
 package simplepoker.rules;
 
 import simplepoker.Card;
-import simplepoker.PokerHandRank;
+import simplepoker.enums.PokerHand;
 
 import java.util.List;
 
@@ -12,7 +12,7 @@ public class HighCard implements PokerHandRule{
     }
 
     @Override
-    public PokerHandRank returnCorrespondingRank() {
-        return PokerHandRank.HIGHCARD;
+    public PokerHand returnCorrespondingRank() {
+        return PokerHand.HIGHCARD;
     }
 }
